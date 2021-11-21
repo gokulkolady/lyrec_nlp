@@ -42,6 +42,7 @@ class GeniusAPI:
 			lyrics = lyrics.lower()
 			lyrics = lyrics.replace("\n"," ")
 			lyrics = lyrics.replace("\\'", "'")
+			lyrics = lyrics.replace("\'", "'")
 			lyrics = lyrics.replace(".", "")
 			lyrics = re.sub("[\(\[].*?[\)\]]", "", lyrics) #remove [] () and the contents in between
 			song = [name, artist, lyrics]
