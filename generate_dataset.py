@@ -32,13 +32,17 @@ class GeniusAPI:
 		songsL = [] # list of songs [songname, artist, lyrics]
 		
 		for s in songs:
-			name = s["full_title"]
+			name = s["title"]
 			artist = s["artist_names"]
 			songId = s["id"]
 			lyrics = self.genius.lyrics(songId)
+			if lyrics == None:
+				continue
 			lyrics = lyrics[:-28] # remove 5EmbedShare URLCopyEmbedCopy from end
 			lyrics = lyrics.lower()
-			lyrics = lyrics.replace("\n","")
+			lyrics = lyrics.replace("\n"," ")
+			lyrics = lyrics.replace("\\'", "'")
+			lyrics = lyrics.replace(".", "")
 			lyrics = re.sub("[\(\[].*?[\)\]]", "", lyrics) #remove [] () and the contents in between
 			song = [name, artist, lyrics]
 			songsL.append(song)
@@ -65,11 +69,13 @@ class GeniusAPI:
 		print("start")
 		artist_ids = self.get_random_artists()
 		print("found artist ids")
+		dataset = []
 		for artist_id in artist_ids:
 			print(artist_id)
 			songs = self.get_songs_from_artist(artist_id)
 			processedSongs = self.process_songs_lyrics(songs)
-		return songs
+			dataset.extend(processedSongs)
+		return dataset
 
 
 geniusAPI = GeniusAPI("uZp3-3BY12KCvrTaSmi3Gv9EuTEAp-t4X4QOZ1OJbzWgVZakFrP4GF0Vsj0cz_Lu")
