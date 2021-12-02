@@ -39,7 +39,17 @@ def get_playlist(playlist_name):
     return playlist_id
 
 
-'''
+def get_playlist_tracks(playlist_id, feature = "id"):
+    playlist_info = sp.playlist_tracks(playlist_id)
+    items = playlist_info['items']
+
+    features = []
+    while playlist_info['next']:
+        playlist_info = sp.next(playlist_info)
+        items.extend(playlist_info['items'])
+    for track in items: 
+        features.append([track["track"]["name"],track["track"]["album"]["artists"][0]["name"]])
+    return features
 
 
 if __name__ == "__main__":
@@ -64,4 +74,3 @@ if __name__ == "__main__":
 
     # print (updated_data)
 
-'''
