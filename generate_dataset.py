@@ -4,6 +4,8 @@
 import lyricsgenius
 import random
 import re
+import spotify_api
+import pickle
 
 #genius = lyricsgenius.Genius("uZp3-3BY12KCvrTaSmi3Gv9EuTEAp-t4X4QOZ1OJbzWgVZakFrP4GF0Vsj0cz_Lu")
 #artist = genius.search_artist("Kendrick Lamar", max_songs=1, sort="title")
@@ -22,9 +24,14 @@ class GeniusAPI:
 		page_offset = 1
 
 		while page_offset:
-			response = self.genius.artist_songs(artist_id, per_page=50, page=page_offset)
-			songs.extend(response["songs"])
-			page_offset = response["next_page"]
+			while True:
+				try:
+					response = self.genius.artist_songs(artist_id, per_page=50, page=page_offset)
+					songs.extend(response["songs"])
+					page_offset = response["next_page"]
+					break
+				except:
+					pass
 		
 		return songs
 	
@@ -35,7 +42,12 @@ class GeniusAPI:
 			name = s["title"]
 			artist = s["artist_names"]
 			songId = s["id"]
-			lyrics = self.genius.lyrics(songId)
+			while True:
+				try:
+					lyrics = self.genius.lyrics(songId)
+					break
+				except:
+					pass
 			if lyrics == None:
 				continue
 			lyrics = lyrics[:-28] # remove 5EmbedShare URLCopyEmbedCopy from end
@@ -46,7 +58,9 @@ class GeniusAPI:
 			lyrics = lyrics.replace(".", "")
 			lyrics = re.sub("[\(\[].*?[\)\]]", "", lyrics) #remove [] () and the contents in between
 			song = [name, artist, lyrics]
-			songsL.append(song)
+			song_with_valence = spotify_api.get_song_attributes([song], "valence")
+			if song_with_valence != []:
+				songsL.append(song_with_valence)
 
 		return songsL
 
@@ -55,7 +69,7 @@ class GeniusAPI:
 		max_artist_id = 2961456
 		artist_ids = []
 		
-		random_ids = random.sample(range(2961456), 10)
+		random_ids = random.sample(range(2961456), 100)
 
 		for i in random_ids:
 			try:
@@ -80,4 +94,10 @@ class GeniusAPI:
 
 
 geniusAPI = GeniusAPI("uZp3-3BY12KCvrTaSmi3Gv9EuTEAp-t4X4QOZ1OJbzWgVZakFrP4GF0Vsj0cz_Lu")
-print(geniusAPI.build_dataset()[0:5])
+dataset_100 = geniusAPI.build_dataset()
+
+with open("100_artist_dataset.pkl", "wb") as f:
+	if dataset_100 != []:
+		pickle.dump(dataset_100, f)
+
+print(dataset_100[0:5])

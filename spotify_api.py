@@ -11,7 +11,9 @@ sp = spotipy.Spotify(auth_manager=auth_manager)
 
 def get_song_attributes(data, feature, print_info = False):
     updated_data = []
+
     for track_name, artist, lyrics in data:
+
         q = "track:" + track_name + " artist:" + artist
         track_results = sp.search(q, limit=1, offset=0, type='track,artist', market=None)
         for _, t in enumerate(track_results['tracks']['items']):
@@ -37,7 +39,7 @@ def get_playlist(playlist_name):
     return playlist_id
 
 
-
+'''
 
 
 if __name__ == "__main__":
@@ -62,4 +64,4 @@ if __name__ == "__main__":
 
     # print (updated_data)
 
-
+'''
