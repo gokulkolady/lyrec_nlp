@@ -39,7 +39,7 @@ def get_playlist(playlist_name):
     return playlist_id
 
 
-def get_playlist_tracks(playlist_id, feature = "id"):
+def get_playlist_tracks(playlist_id):
     playlist_info = sp.playlist_tracks(playlist_id)
     items = playlist_info['items']
 
