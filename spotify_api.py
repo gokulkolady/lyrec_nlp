@@ -33,42 +33,33 @@ def get_playlist(playlist_name):
     q = "playlist:" + playlist_name
     playlist_results = sp.search(q, limit=1, offset=0, type='playlist', market=None)
     for _, t in enumerate(playlist_results['playlists']['items']):
-        print (t)
-        print (t["name"])
         playlist_id.append(t["uri"])
     return playlist_id
 
 
 
 
-playlist_id = get_playlist("RapCaviar")
 
-print ("playlist id: ", playlist_id[0])
+if __name__ == "__main__":
+    playlist_id = get_playlist("Rap")
 
-playlist_info = sp.playlist(playlist_id[0], fields="tracks", market=None, additional_types=('track', ))
+    # print (get_playlist_tracks(playlist_id[0], "name"))
+    print (get_playlist_tracks(playlist_id[0]))
 
-print (playlist_info)
+    # featured = sp.featured_playlists()
 
+    # for _, t in enumerate(featured['playlists']['items']):
+    #     print (t["name"])
+    #     print (t["uri"])
 
-for _, t in enumerate(playlist_info['tracks']['items']):
-    print (t)
-    print (t["name"])
-    # print (t[""])
+    # data = [["8TEEN", "Khalid", "I still live with my parents"], 
+    #         ["The Way Life Goes", "Lil Uzi Vert", "I like that girl too much"],
+    #         ["Trying", "midwxst", "Back to the basics"]]
 
-featured = sp.featured_playlists()
+    # desired_feature = "valence"
+    # print_info = True
+    # updated_data = get_song_attributes(data, desired_feature, False)
 
-for _, t in enumerate(featured['playlists']['items']):
-    print (t["name"])
-    print (t["uri"])
-
-data = [["8TEEN", "Khalid", "I still live with my parents"], 
-        ["The Way Life Goes", "Lil Uzi Vert", "I like that girl too much"],
-        ["Trying", "midwxst", "Back to the basics"]]
-
-desired_feature = "valence"
-print_info = True
-updated_data = get_song_attributes(data, desired_feature, False)
-
-print (updated_data)
+    # print (updated_data)
 
 
