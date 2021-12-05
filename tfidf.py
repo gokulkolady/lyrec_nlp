@@ -7,7 +7,7 @@ import string
 import random
 import pickle
 
-MIN_OCCUR = 50
+MIN_OCCUR = 300
 
 class Tokenizer:
   def __init__(self, min_occur=MIN_OCCUR):
@@ -110,8 +110,11 @@ def transform_tfidf(matrix):
 # Load data for tfidf processing from pickle
 all_data = []
 
-with open('100_artist_dataset.pkl', 'rb') as f:
-  all_data = pickle.load(f)
+with open('1000_song_dataset.pkl', 'rb') as f:
+    all_data = pickle.load(f)
+
+with open('10000_song_dataset.pkl', 'rb') as f:
+    all_data += pickle.load(f)
 
 all_data = [internal[0] for internal in all_data]
 lyric_data = [internal[2] for internal in all_data]
@@ -132,5 +135,5 @@ for c in range(len(all_data)):
   all_data[c].append(td_matrix_tfidf[:,c].tolist())
 
 # Save updated all_data to pickle file
-with open('100_artist_tfidf_dataset.pkl', 'wb') as f2:
+with open('1000_song_tfidf_dataset.pkl', 'wb') as f2:
   pickle.dump(all_data, f2)
