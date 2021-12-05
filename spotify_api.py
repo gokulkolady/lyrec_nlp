@@ -1,5 +1,6 @@
 import spotipy 
 from spotipy.oauth2 import SpotifyClientCredentials
+import pickle
 
 client_id = "45cfe204e32d42e89a050a1eec8bf1f9"
 client_secret = "cbfcace375974373b858b231a990c01e"
@@ -56,10 +57,10 @@ def get_playlist_tracks(playlist_id):
 
 
 if __name__ == "__main__":
-    playlist_id = get_playlist("Rap")
+    # playlist_id = get_playlist("Rap")
 
     # print (get_playlist_tracks(playlist_id[0], "name"))
-    print (get_playlist_tracks(playlist_id[0]))
+    # print (get_playlist_tracks(playlist_id[0]))
 
     # featured = sp.featured_playlists()
 
@@ -76,4 +77,35 @@ if __name__ == "__main__":
     # updated_data = get_song_attributes(data, desired_feature, False)
 
     # print (updated_data)
+
+
+
+    ###############################
+
+    
+    # Create Evaluation Dataset
+
+    # ids = ["37i9dQZF1DWSqBruwoIXkA", "37i9dQZF1DXdPec7aLTmlC", "37i9dQZF1DX0XUsuxWHRQd", "37i9dQZF1EQmPV0vrce2QZ", "37i9dQZF1DX893Xy4cp22W", "37i9dQZF1DXdyjMX5o2vCq"]
+
+    # playlist_names = ["Sad_Hour", "Happy_Hits", "RapCaviar", "Country_Mix", "Xxxtentacion", "Frank_Ocean"]
+
+    # for index in range(len(ids)):
+    #     playlist_id = ids[index]
+    #     data= []
+    #     info = get_playlist_tracks(playlist_id)
+    #     for sub_list in info:
+    #         non_lyrics = sub_list + [""]
+    #         data.append(non_lyrics)
+
+    #     final_data = get_song_attributes(data, "valence")
+    #     # Save updated all_data to pickle file
+    #     name = playlist_names[index] + "_evaluation.pkl"
+    #     with open(name, 'wb') as f2:
+    #         pickle.dump(final_data, f2)
+
+        
+
+    
+
+    
 
