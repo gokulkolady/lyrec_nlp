@@ -35,42 +35,42 @@ def get_playlist(playlist_name):
     q = "playlist:" + playlist_name
     playlist_results = sp.search(q, limit=1, offset=0, type='playlist', market=None)
     for _, t in enumerate(playlist_results['playlists']['items']):
-        print (t)
-        print (t["name"])
         playlist_id.append(t["uri"])
     return playlist_id
 
 
-'''
+def get_playlist_tracks(playlist_id):
+    playlist_info = sp.playlist_tracks(playlist_id)
+    items = playlist_info['items']
 
-playlist_id = get_playlist("RapCaviar")
+    features = []
+    while playlist_info['next']:
+        playlist_info = sp.next(playlist_info)
+        items.extend(playlist_info['items'])
+    for track in items: 
+        features.append([track["track"]["name"],track["track"]["album"]["artists"][0]["name"]])
+    return features
 
-print ("playlist id: ", playlist_id[0])
 
-playlist_info = sp.playlist(playlist_id[0], fields="tracks", market=None, additional_types=('track', ))
+if __name__ == "__main__":
+    playlist_id = get_playlist("Rap")
 
-print (playlist_info)
+    # print (get_playlist_tracks(playlist_id[0], "name"))
+    print (get_playlist_tracks(playlist_id[0]))
 
+    # featured = sp.featured_playlists()
 
-for _, t in enumerate(playlist_info['tracks']['items']):
-    print (t)
-    print (t["name"])
-    # print (t[""])
+    # for _, t in enumerate(featured['playlists']['items']):
+    #     print (t["name"])
+    #     print (t["uri"])
 
-featured = sp.featured_playlists()
+    # data = [["8TEEN", "Khalid", "I still live with my parents"], 
+    #         ["The Way Life Goes", "Lil Uzi Vert", "I like that girl too much"],
+    #         ["Trying", "midwxst", "Back to the basics"]]
 
-for _, t in enumerate(featured['playlists']['items']):
-    print (t["name"])
-    print (t["uri"])
+    # desired_feature = "valence"
+    # print_info = True
+    # updated_data = get_song_attributes(data, desired_feature, False)
 
-data = [["8TEEN", "Khalid", "I still live with my parents"], 
-        ["The Way Life Goes", "Lil Uzi Vert", "I like that girl too much"],
-        ["Trying", "midwxst", "Back to the basics"]]
+    # print (updated_data)
 
-desired_feature = "valence"
-print_info = True
-updated_data = get_song_attributes(data, desired_feature, False)
-
-print (updated_data)
-
-'''

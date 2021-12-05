@@ -5,9 +5,12 @@ import numpy as np
 import re
 import string
 import random
+import pickle
+
+MIN_OCCUR = 10
 
 class Tokenizer:
-  def __init__(self, min_occur=10):
+  def __init__(self, min_occur=MIN_OCCUR):
     self.word_to_token = {}
     self.token_to_word = {}
     self.word_count = {}
@@ -20,16 +23,14 @@ class Tokenizer:
 
   def fit(self, corpus):
     for review in corpus:
-      review = review.strip().lower()
-      words = re.findall(r"[\w']+|[.,!?;]", review)
+      words = review.split()
       for word in words:
           if word not in self.word_count:
               self.word_count[word] = 0
           self.word_count[word] += 1
 
     for review in corpus:
-      review = review.strip().lower()
-      words = re.findall(r"[\w']+|[.,!?;]", review)
+      words = review.split()
       for word in words:
         if self.word_count[word] < self.min_occur:
           continue
@@ -64,7 +65,7 @@ class Tokenizer:
 
 
 class CountVectorizer:
-  def __init__(self, min_occur=10):
+  def __init__(self, min_occur=MIN_OCCUR):
     self.tokenizer = Tokenizer(min_occur)
 
   def fit(self, corpus):
@@ -74,8 +75,7 @@ class CountVectorizer:
     n = len(corpus)
     X = np.zeros((n, self.tokenizer.vocab_size))
     for i, review in enumerate(corpus):
-      review = review.strip().lower()
-      words = re.findall(r"[\w']+|[.,!?;]", review)
+      words = review.split()
       for word in words:
         if word not in self.tokenizer.word_count or self.tokenizer.word_count[word] < self.tokenizer.min_occur:
           X[i][0] += 1
@@ -105,12 +105,32 @@ def transform_tfidf(matrix):
     # modify the input; instead, it should return a new object.
     return matrix * np.log(matrix.shape[1]/np.count_nonzero(matrix, axis=1, keepdims=True))
 
+
+
+# Load data for tfidf processing from pickle
+all_data = []
+
+with open('100_artist_dataset.pkl', 'rb') as f:
+  all_data = pickle.load(f)
+
+all_data = [internal[0] for internal in all_data]
+lyric_data = [internal[2] for internal in all_data]
+
 # Create Term Document matrix
-train_reviews = None # Get from Saumya's code
 vectorizer = CountVectorizer()
-vectorizer.fit(train_reviews)
-td_matrix = vectorizer.transform(train_reviews).T
+vectorizer.fit(lyric_data)
+td_matrix = vectorizer.transform(lyric_data).T
 print(f"TD matrix is {td_matrix.shape[0]} x {td_matrix.shape[1]}")
 
 # Convert to TF-IDF matrix
 td_matrix_tfidf = transform_tfidf(td_matrix)
+# for c in range(td_matrix.shape[1]):
+#   print(td_matrix_tfidf[:,c].tolist())
+
+# Append tfidf vectors to all_data
+for c in range(len(all_data)):
+  all_data[c].append(td_matrix_tfidf[:,c].tolist())
+
+# Save updated all_data to pickle file
+with open('100_artist_tfidf_dataset.pkl', 'wb') as f2:
+  pickle.dump(all_data, f2)
