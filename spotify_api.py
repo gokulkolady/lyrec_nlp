@@ -2,8 +2,8 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import pickle
 
-client_id = "45cfe204e32d42e89a050a1eec8bf1f9"
-client_secret = "cbfcace375974373b858b231a990c01e"
+client_id = "1b1a5331aac34076961787e293dba5d1"
+client_secret = "5ae11c4dcf4d4534a2872c152891ec27"
 redirect_uri = "http://localhost:8080"
 
 auth_manager = SpotifyClientCredentials(client_id= client_id, 

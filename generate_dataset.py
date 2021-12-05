@@ -86,8 +86,9 @@ class GeniusAPI:
         all_artist_ids = set()
         print("found artist ids")
         dataset = []
+        multiple = 1
         while len(dataset) < 10000:
-			print("len dataset")
+            print("len dataset")
             print(len(dataset))
             artist_random = self.get_random_artists()
             artist_ids = artist_random.difference(all_artist_ids)
@@ -98,6 +99,13 @@ class GeniusAPI:
                 songs = self.get_songs_from_artist(artist_id)
                 processedSongs = self.process_songs_lyrics(songs)
                 dataset.extend(processedSongs)
+            
+            if len(dataset)/25 > multiple:
+                with open("10000_song_dataset.pkl", "wb") as f:
+                    if dataset != []:
+                        pickle.dump(dataset, f)
+                multiple += 1
+            
 
         return dataset
 
