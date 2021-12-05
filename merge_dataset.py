@@ -13,6 +13,9 @@ with open('10000_song_dataset.pkl', 'rb') as f:
 with open('2000_song_dataset.pkl', 'rb') as f:
     all_data += pickle.load(f)
 
+with open('3000_song_dataset.pkl', 'rb') as f:
+    all_data += pickle.load(f)
+
 with open('20000_song_dataset.pkl', 'rb') as f:
     all_data += pickle.load(f)
 
