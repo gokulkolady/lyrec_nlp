@@ -102,7 +102,7 @@ class GeniusAPI:
                 dataset.extend(processedSongs)
 
             if len(dataset)/25 > multiple:
-                with open("1000_song_dataset.pkl", "wb") as f:
+                with open("2000_song_dataset.pkl", "wb") as f:
                     if dataset != []:
                         pickle.dump(dataset, f)
                 multiple += 1
@@ -113,7 +113,7 @@ class GeniusAPI:
 geniusAPI = GeniusAPI("FY_tIrvdYOK7haiV2e8-KC9KnF8XRdK2_-9Si8Fl7xOxEmyEGs1cxjjPjBPaSM1Q")
 dataset_100 = geniusAPI.build_dataset()
 
-with open("1000_song_dataset.pkl", "wb") as f:
+with open("2000_song_dataset.pkl", "wb") as f:
     if dataset_100 != []:
         pickle.dump(dataset_100, f)
 

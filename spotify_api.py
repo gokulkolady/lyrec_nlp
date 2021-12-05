@@ -56,7 +56,7 @@ def get_playlist_tracks(playlist_id):
     return features
 
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     # playlist_id = get_playlist("Rap")
 
     # print (get_playlist_tracks(playlist_id[0], "name"))
@@ -103,9 +103,4 @@ if __name__ == "__main__":
     #     with open(name, 'wb') as f2:
     #         pickle.dump(final_data, f2)
 
-        
-
-    
-
-    
 
