@@ -17,16 +17,19 @@ def get_song_attributes(data, feature, print_info = False):
         q = "track:" + track_name + " artist:" + artist
         track_results = sp.search(q, limit=1, offset=0, type='track,artist', market=None)
         for _, t in enumerate(track_results['tracks']['items']):
-            response_artist = t['artists'][0]['name']
-            response_track = t['name']
-            track_id = t['uri']
-            if print_info: 
-                print (response_artist)
-                print (response_track)
-                print (track_id)
-                print ("--------------")
-            audio_feature = sp.audio_features(tracks=t['uri'])
-            updated_data.append([track_name, artist, lyrics, audio_feature[0][feature], t['uri']])
+            try:
+                response_artist = t['artists'][0]['name']
+                response_track = t['name']
+                track_id = t['uri']
+                if print_info: 
+                    print (response_artist)
+                    print (response_track)
+                    print (track_id)
+                    print ("--------------")
+                audio_feature = sp.audio_features(tracks=t['uri'])
+                updated_data.append([track_name, artist, lyrics, audio_feature[0][feature], t['uri']])
+            except:
+                continue
     return updated_data
 
 
