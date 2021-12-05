@@ -7,7 +7,7 @@ import string
 import random
 import pickle
 
-MIN_OCCUR = 50
+MIN_OCCUR = 300
 
 class Tokenizer:
   def __init__(self, min_occur=MIN_OCCUR):
